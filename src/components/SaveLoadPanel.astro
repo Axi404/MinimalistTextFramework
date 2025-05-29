@@ -2,457 +2,62 @@
 // Save and load panel component
 ---
 
-<div id="save-load-panel" class="save-panel">
-    <div class="panel-header">
-        <span class="disk-icon">💾</span>
-        <h3 class="panel-title">存档管理</h3>
-        <div class="header-decoration"></div>
+<div id="save-load-panel" class="cyber-panel panel-save">
+    <div class="panel-header panel-header-save">
+        <span class="disk-icon cyber-icon text-warning spin-animation">💾</span>
+        <h3 class="cyber-subtitle text-warning">存档管理</h3>
+        <div class="data-flow text-warning"></div>
     </div>
 
-    <div class="save-load-controls">
-        <button id="export-save" class="control-button export-btn">
-            <span class="btn-icon">📤</span>
-            <span>导出存档</span>
-        </button>
-        <button id="import-save" class="control-button import-btn">
-            <span class="btn-icon">📥</span>
-            <span>导入存档</span>
-        </button>
-        <button id="export-file" class="control-button download-btn">
-            <span class="btn-icon">💾</span>
-            <span>下载存档文件</span>
-        </button>
-        <button id="import-file-btn" class="control-button upload-btn">
-            <span class="btn-icon">📂</span>
-            <span>上传存档文件</span>
-        </button>
-        <input
-            type="file"
-            id="import-file"
-            accept=".json"
-            style="display:none"
-        />
+    <div class="panel-content-sm">
+        <div class="cyber-grid grid-2">
+            <button id="export-save" class="cyber-btn btn-primary">
+                <span class="btn-icon">📤</span>
+                <span>导出存档</span>
+            </button>
+            <button id="import-save" class="cyber-btn btn-primary">
+                <span class="btn-icon">📥</span>
+                <span>导入存档</span>
+            </button>
+            <button id="export-file" class="cyber-btn btn-secondary">
+                <span class="btn-icon">💾</span>
+                <span>下载存档文件</span>
+            </button>
+            <div class="cyber-file-input">
+                <input type="file" id="import-file" accept=".json" />
+                <div class="file-input-trigger" id="import-file-btn">
+                    <span class="file-input-icon">📂</span>
+                    <div class="file-input-text">
+                        <span class="file-input-primary">上传存档文件</span>
+                        <span class="file-input-secondary">支持 .json 格式</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div id="save-load-area" class="save-area" style="display: none;">
-        <div class="textarea-container">
+    <div id="save-load-area" class="cyber-form" style="display: none;">
+        <div class="form-group">
+            <label for="save-data" class="form-label">存档数据</label>
             <textarea
                 id="save-data"
                 placeholder="粘贴存档数据到此处或复制当前存档"
-                class="save-textarea"></textarea>
+                class="cyber-textarea"></textarea>
         </div>
-        <div class="save-load-buttons">
-            <button id="copy-save" class="action-button copy-btn">
+        <div class="cyber-grid grid-3">
+            <button id="copy-save" class="cyber-btn btn-primary btn-sm">
                 <span class="btn-icon">📋</span>
                 <span>复制</span>
             </button>
-            <button id="load-save" class="action-button apply-btn">
+            <button id="load-save" class="cyber-btn btn-success btn-sm">
                 <span class="btn-icon">✅</span>
                 <span>应用</span>
             </button>
-            <button id="cancel-save-load" class="action-button cancel-btn">
+            <button id="cancel-save-load" class="cyber-btn btn-danger btn-sm">
                 <span class="btn-icon">❌</span>
                 <span>取消</span>
             </button>
         </div>
     </div>
 </div>
-
-<style>
-    .save-panel {
-        background: linear-gradient(
-            135deg,
-            rgba(40, 20, 0, 0.6),
-            rgba(50, 30, 0, 0.4)
-        );
-        border-radius: 8px;
-        border: 1px solid rgba(255, 204, 0, 0.4);
-        box-shadow:
-            0 4px 20px rgba(255, 204, 0, 0.2),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        position: relative;
-        overflow: hidden;
-        margin-top: 1.5rem;
-    }
-
-    .save-panel::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, #ffcc00, transparent);
-        animation: save-scan 4s linear infinite;
-    }
-
-    @keyframes save-scan {
-        0% {
-            transform: translateX(-100%);
-            opacity: 0;
-        }
-        50% {
-            opacity: 1;
-        }
-        100% {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-    }
-
-    .panel-header {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 1rem 1.5rem;
-        background: linear-gradient(
-            135deg,
-            rgba(60, 40, 0, 0.4),
-            rgba(50, 30, 0, 0.6)
-        );
-        border-bottom: 1px solid rgba(255, 204, 0, 0.3);
-        position: relative;
-    }
-
-    .disk-icon {
-        font-size: 1.5rem;
-        filter: drop-shadow(0 0 8px #ffcc00);
-        animation: disk-spin 3s linear infinite;
-    }
-
-    @keyframes disk-spin {
-        0% {
-            transform: rotate(0deg);
-        }
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-
-    .panel-title {
-        color: #ffcc00;
-        margin: 0;
-        font-size: 1.3rem;
-        font-weight: bold;
-        letter-spacing: 1px;
-        text-shadow: 0 0 8px rgba(255, 204, 0, 0.6);
-    }
-
-    .header-decoration {
-        flex: 1;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, #ffcc00, transparent);
-        border-radius: 1px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .header-decoration::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 50%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, #ffffff, transparent);
-        animation: decoration-flow 2s linear infinite;
-    }
-
-    @keyframes decoration-flow {
-        0% {
-            left: -100%;
-        }
-        100% {
-            left: 100%;
-        }
-    }
-
-    .save-load-controls {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-        padding: 1.5rem;
-    }
-
-    .control-button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        padding: 1rem;
-        background: linear-gradient(
-            135deg,
-            rgba(0, 80, 120, 0.6),
-            rgba(0, 60, 100, 0.8)
-        );
-        border: 2px solid #0088ff;
-        color: #00ccff;
-        border-radius: 6px;
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.95rem;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-        text-align: center;
-    }
-
-    .control-button::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(0, 204, 255, 0.3),
-            transparent
-        );
-        transition: left 0.4s ease;
-    }
-
-    .control-button:hover {
-        transform: translateY(-2px);
-        box-shadow:
-            0 4px 15px rgba(0, 136, 255, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.2);
-        border-color: #00ccff;
-    }
-
-    .control-button:hover::before {
-        left: 100%;
-    }
-
-    .control-button:active {
-        transform: translateY(0);
-    }
-
-    .btn-icon {
-        font-size: 1.1rem;
-        filter: drop-shadow(0 0 4px currentColor);
-    }
-
-    .export-btn:hover {
-        background: linear-gradient(
-            135deg,
-            rgba(0, 120, 80, 0.6),
-            rgba(0, 100, 60, 0.8)
-        );
-        border-color: #00cc88;
-        color: #00ffaa;
-    }
-
-    .import-btn:hover {
-        background: linear-gradient(
-            135deg,
-            rgba(120, 80, 0, 0.6),
-            rgba(100, 60, 0, 0.8)
-        );
-        border-color: #ffaa00;
-        color: #ffcc00;
-    }
-
-    .download-btn:hover {
-        background: linear-gradient(
-            135deg,
-            rgba(80, 0, 120, 0.6),
-            rgba(60, 0, 100, 0.8)
-        );
-        border-color: #cc00ff;
-        color: #ff66ff;
-    }
-
-    .upload-btn:hover {
-        background: linear-gradient(
-            135deg,
-            rgba(120, 60, 0, 0.6),
-            rgba(100, 40, 0, 0.8)
-        );
-        border-color: #ff8800;
-        color: #ffaa44;
-    }
-
-    .save-area {
-        padding: 1.5rem;
-        background: linear-gradient(
-            135deg,
-            rgba(0, 20, 40, 0.4),
-            rgba(0, 30, 50, 0.6)
-        );
-        border-top: 1px solid rgba(255, 204, 0, 0.3);
-    }
-
-    .textarea-container {
-        position: relative;
-        margin-bottom: 1rem;
-    }
-
-    .save-textarea {
-        width: 100%;
-        height: 140px;
-        background: linear-gradient(
-            135deg,
-            rgba(10, 10, 20, 0.9),
-            rgba(20, 20, 30, 0.8)
-        );
-        border: 2px solid rgba(0, 255, 204, 0.3);
-        color: #00ffaa;
-        padding: 1rem;
-        font-family: "Courier New", monospace;
-        font-size: 0.9rem;
-        border-radius: 6px;
-        resize: vertical;
-        box-shadow:
-            inset 0 2px 10px rgba(0, 0, 0, 0.5),
-            0 2px 10px rgba(0, 255, 204, 0.1);
-        transition: all 0.3s ease;
-        line-height: 1.4;
-    }
-
-    .save-textarea:focus {
-        outline: none;
-        border-color: rgba(0, 255, 204, 0.6);
-        box-shadow:
-            inset 0 2px 10px rgba(0, 0, 0, 0.5),
-            0 0 15px rgba(0, 255, 204, 0.3);
-        background: linear-gradient(
-            135deg,
-            rgba(10, 10, 25, 0.9),
-            rgba(20, 20, 35, 0.8)
-        );
-    }
-
-    .save-textarea::placeholder {
-        color: rgba(0, 255, 170, 0.5);
-        font-style: italic;
-    }
-
-    .save-load-buttons {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-    }
-
-    .action-button {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.8rem 1.2rem;
-        border-radius: 6px;
-        font-family: "Share Tech Mono", monospace;
-        font-size: 0.9rem;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-        border: 2px solid;
-    }
-
-    .action-button::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.2),
-            transparent
-        );
-        transition: left 0.3s ease;
-    }
-
-    .action-button:hover::before {
-        left: 100%;
-    }
-
-    .copy-btn {
-        background: linear-gradient(
-            135deg,
-            rgba(0, 120, 120, 0.6),
-            rgba(0, 100, 100, 0.8)
-        );
-        border-color: #00cccc;
-        color: #00ffff;
-    }
-
-    .copy-btn:hover {
-        background: linear-gradient(
-            135deg,
-            rgba(0, 150, 150, 0.6),
-            rgba(0, 130, 130, 0.8)
-        );
-        box-shadow: 0 4px 15px rgba(0, 204, 204, 0.4);
-        transform: translateY(-2px);
-    }
-
-    .apply-btn {
-        background: linear-gradient(
-            135deg,
-            rgba(0, 120, 0, 0.6),
-            rgba(0, 100, 0, 0.8)
-        );
-        border-color: #00cc00;
-        color: #00ff00;
-    }
-
-    .apply-btn:hover {
-        background: linear-gradient(
-            135deg,
-            rgba(0, 150, 0, 0.6),
-            rgba(0, 130, 0, 0.8)
-        );
-        box-shadow: 0 4px 15px rgba(0, 204, 0, 0.4);
-        transform: translateY(-2px);
-    }
-
-    .cancel-btn {
-        background: linear-gradient(
-            135deg,
-            rgba(120, 0, 0, 0.6),
-            rgba(100, 0, 0, 0.8)
-        );
-        border-color: #cc0000;
-        color: #ff4444;
-    }
-
-    .cancel-btn:hover {
-        background: linear-gradient(
-            135deg,
-            rgba(150, 0, 0, 0.6),
-            rgba(130, 0, 0, 0.8)
-        );
-        box-shadow: 0 4px 15px rgba(204, 0, 0, 0.4);
-        transform: translateY(-2px);
-    }
-
-    /* Responsive design */
-    @media (max-width: 768px) {
-        .save-load-controls {
-            grid-template-columns: 1fr;
-            gap: 0.8rem;
-            padding: 1rem;
-        }
-
-        .save-load-buttons {
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .action-button {
-            justify-content: center;
-        }
-
-        .save-textarea {
-            height: 120px;
-            font-size: 0.8rem;
-        }
-    }
-</style>
 

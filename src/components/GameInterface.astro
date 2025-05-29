@@ -18,7 +18,7 @@ for (const path in sceneFiles) {
 }
 
 // 定义游戏开始时的场景 ID
-const initialSceneId = "welcome";
+const initialSceneId = "start_alley";
 ---
 
 <div id="game-container" class="cyberpunk-theme">
@@ -464,6 +464,7 @@ const initialSceneId = "welcome";
                 // 创建按钮
                 const button = document.createElement("button");
                 button.textContent = actionText; // 使用 JSON 中定义的动作文本
+                button.className = "action-btn"; // 应用新的按钮样式
 
                 // 使用统一的按钮处理函数
                 renderSceneButton(button, exitData);
@@ -502,9 +503,9 @@ const initialSceneId = "welcome";
         ) {
             const returnButton = document.createElement("button");
             returnButton.textContent = "返回";
-            returnButton.className = "return-button";
+            returnButton.className = "action-btn action-btn-return"; // 使用新的返回按钮样式
             returnButton.addEventListener("click", () => {
-                returnButton.classList.add("button-clicked");
+                returnButton.classList.add("action-btn-clicked");
                 setTimeout(() => {
                     returnFromEvent();
                 }, 300);
@@ -523,8 +524,9 @@ const initialSceneId = "welcome";
         if (typeof exitData === "string") {
             if (exitData === "RETURN") {
                 // 处理特殊返回标记
+                button.className = "action-btn action-btn-return"; // 应用返回按钮样式
                 button.addEventListener("click", () => {
-                    button.classList.add("button-clicked");
+                    button.classList.add("action-btn-clicked");
                     setTimeout(() => {
                         returnFromEvent();
                     }, 300);
@@ -536,8 +538,9 @@ const initialSceneId = "welcome";
             }
         } else if (exitData.action === "return") {
             // 特殊处理：使用action标记的返回动作
+            button.className = "action-btn action-btn-return"; // 应用返回按钮样式
             button.addEventListener("click", () => {
-                button.classList.add("button-clicked");
+                button.classList.add("action-btn-clicked");
                 setTimeout(() => {
                     returnFromEvent();
                 }, 300);
@@ -545,7 +548,7 @@ const initialSceneId = "welcome";
         } else if (exitData.onComplete) {
             // 特殊处理：有onComplete回调函数的结果
             button.addEventListener("click", () => {
-                button.classList.add("button-clicked");
+                button.classList.add("action-btn-clicked");
                 setTimeout(() => {
                     exitData.onComplete();
                 }, 300);
@@ -557,7 +560,7 @@ const initialSceneId = "welcome";
         ) {
             // 特殊处理：结果数组中有onComplete回调
             button.addEventListener("click", () => {
-                button.classList.add("button-clicked");
+                button.classList.add("action-btn-clicked");
                 setTimeout(() => {
                     exitData.results[0].onComplete();
                 }, 300);
@@ -572,7 +575,7 @@ const initialSceneId = "welcome";
     // 处理复杂行动（带结果的行动）
     function handleComplexActionClick(event) {
         // 添加按钮点击效果
-        event.target.classList.add("button-clicked");
+        event.target.classList.add("action-btn-clicked");
 
         try {
             // 解析行动数据
@@ -826,7 +829,7 @@ const initialSceneId = "welcome";
         const targetSceneId = event.target.dataset.targetScene;
         if (targetSceneId) {
             // 添加按钮点击效果
-            event.target.classList.add("button-clicked");
+            event.target.classList.add("action-btn-clicked");
 
             // 清除可能存在的返回标志，确保可以正常触发新事件
             gameState.justReturnedFromEvent = false;
@@ -846,7 +849,11 @@ const initialSceneId = "welcome";
         const playerInfoEl = document.getElementById("player-info");
         const resetButton = document.createElement("button");
         resetButton.textContent = "重置游戏";
-        resetButton.className = "reset-button";
+        resetButton.className = "cyber-btn btn-danger"; // 使用新的按钮样式
+        resetButton.style.width = "100%"; // 按钮占满容器宽度
+        resetButton.style.marginTop = "var(--spacing-md)"; // 添加顶部间距
+        resetButton.style.display = "block"; // 块级元素
+        resetButton.style.textAlign = "center"; // 文本居中
         resetButton.addEventListener("click", () => {
             if (confirm("确定要重置游戏吗？所有进度将丢失。")) {
                 localStorage.removeItem("cyberpunkGameState");

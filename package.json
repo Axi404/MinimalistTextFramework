@@ -9,7 +9,6 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@preact/signals": "^2.0.4",
     "astro": "5.8.0"
   }
 }
