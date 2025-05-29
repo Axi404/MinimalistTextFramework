@@ -1,0 +1,684 @@
+---
+// Game header component with cyberpunk terminal style
+---
+
+<div class="terminal-header">
+    <div class="data-particles"></div>
+    <div class="terminal-controls">
+        <span class="control control-close">
+            <span class="control-inner"></span>
+        </span>
+        <span class="control control-minimize">
+            <span class="control-inner"></span>
+        </span>
+        <span class="control control-maximize">
+            <span class="control-inner"></span>
+        </span>
+        <div class="system-info">
+            <span class="cpu-usage" id="cpu-usage">CPU: 42%</span>
+            <span class="memory-usage" id="memory-usage">RAM: 68%</span>
+        </div>
+    </div>
+    <div class="terminal-title">
+        <div class="title-container">
+            <span class="title-prefix">NEXUS-TERM</span>
+            <span class="title-cursor">|</span>
+        </div>
+        <div class="version-container">
+            <span class="version" id="version">v2.0.77</span>
+            <span class="build-info" id="build-info">BUILD-4A7E</span>
+        </div>
+    </div>
+    <div class="terminal-status">
+        <div class="status-grid">
+            <span class="status-indicator"></span>
+            <span class="status-text">CONNECTED</span>
+            <div class="signal-bars">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+        <div class="data-transfer">
+            <span class="transfer-rate" id="upload-rate">↑ 1.2MB/s</span>
+            <span class="transfer-rate" id="download-rate">↓ 3.4MB/s</span>
+        </div>
+    </div>
+</div>
+
+<style>
+    .terminal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: linear-gradient(
+                135deg,
+                rgba(5, 5, 15, 0.98),
+                rgba(10, 10, 25, 0.95)
+            ),
+            radial-gradient(
+                circle at 20% 20%,
+                rgba(0, 255, 255, 0.05) 0%,
+                transparent 50%
+            ),
+            radial-gradient(
+                circle at 80% 80%,
+                rgba(255, 0, 255, 0.03) 0%,
+                transparent 50%
+            );
+        padding: 1rem 1.5rem;
+        border-radius: 12px 12px 0 0;
+        margin: -2rem -2rem 0 -2rem;
+        border-bottom: 3px solid transparent;
+        border-image: linear-gradient(90deg, #00ffff, #ff00ff, #00ffff) 1;
+        box-shadow:
+            0 4px 20px rgba(0, 255, 255, 0.4),
+            0 0 40px rgba(255, 0, 255, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            inset 0 -1px 0 rgba(0, 255, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(15px);
+    }
+
+    .terminal-header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            #00ffff,
+            #ff00ff,
+            #00ffff,
+            transparent
+        );
+        animation: border-scan 4s linear infinite;
+        z-index: 2;
+    }
+
+    .terminal-header::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+                45deg,
+                transparent 48%,
+                rgba(0, 255, 255, 0.02) 49%,
+                rgba(0, 255, 255, 0.02) 51%,
+                transparent 52%
+            ),
+            linear-gradient(
+                -45deg,
+                transparent 48%,
+                rgba(255, 0, 255, 0.02) 49%,
+                rgba(255, 0, 255, 0.02) 51%,
+                transparent 52%
+            );
+        background-size: 20px 20px;
+        animation: grid-move 10s linear infinite;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    @keyframes border-scan {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(100%);
+        }
+    }
+
+    @keyframes grid-move {
+        0% {
+            background-position:
+                0 0,
+                0 0;
+        }
+        100% {
+            background-position:
+                20px 20px,
+                -20px 20px;
+        }
+    }
+
+    /* 数据粒子效果 */
+    .data-particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .data-particles::before,
+    .data-particles::after {
+        content: "";
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: #00ffff;
+        border-radius: 50%;
+        box-shadow: 0 0 6px #00ffff;
+        animation: particle-float 8s ease-in-out infinite;
+    }
+
+    .data-particles::before {
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+
+    .data-particles::after {
+        top: 60%;
+        right: 15%;
+        background: #ff00ff;
+        box-shadow: 0 0 6px #ff00ff;
+        animation-delay: 4s;
+    }
+
+    @keyframes particle-float {
+        0%,
+        100% {
+            transform: translateY(0px) translateX(0px);
+            opacity: 0.3;
+        }
+        25% {
+            transform: translateY(-10px) translateX(5px);
+            opacity: 0.8;
+        }
+        50% {
+            transform: translateY(-5px) translateX(-3px);
+            opacity: 1;
+        }
+        75% {
+            transform: translateY(-8px) translateX(7px);
+            opacity: 0.6;
+        }
+    }
+
+    .terminal-controls {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        z-index: 3;
+    }
+
+    .control {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        position: relative;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .control-inner {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        right: 2px;
+        bottom: 2px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+
+    .control:hover {
+        transform: scale(1.2);
+        box-shadow: 0 0 15px currentColor;
+        border-color: currentColor;
+    }
+
+    .control-close {
+        background: radial-gradient(circle, #1a1a1a, #0a0a0a);
+        color: #ff4757;
+        border-color: #ff4757;
+    }
+
+    .control-close .control-inner {
+        background: radial-gradient(circle, #ff4757, #ff3742);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .control-minimize {
+        background: radial-gradient(circle, #1a1a1a, #0a0a0a);
+        color: #ffa502;
+        border-color: #ffa502;
+    }
+
+    .control-minimize .control-inner {
+        background: radial-gradient(circle, #ffa502, #ff9500);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .control-maximize {
+        background: radial-gradient(circle, #1a1a1a, #0a0a0a);
+        color: #2ed573;
+        border-color: #2ed573;
+    }
+
+    .control-maximize .control-inner {
+        background: radial-gradient(circle, #2ed573, #27c956);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .system-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+        margin-left: 1rem;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.7rem;
+        color: #888;
+    }
+
+    .cpu-usage,
+    .memory-usage {
+        padding: 0.1rem 0.3rem;
+        background: rgba(0, 255, 255, 0.25);
+        border: 1px solid rgba(0, 255, 255, 0.6);
+        border-radius: 3px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #00ffff;
+        font-weight: bold;
+        animation: system-pulse 3s ease-in-out infinite alternate;
+        box-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+    }
+
+    .memory-usage {
+        background: rgba(255, 153, 0, 0.25);
+        border-color: rgba(255, 153, 0, 0.6);
+        color: #ffaa00;
+        animation-delay: 1.5s;
+        box-shadow: 0 0 5px rgba(255, 153, 0, 0.3);
+    }
+
+    @keyframes system-pulse {
+        from {
+            opacity: 0.8;
+            box-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+        }
+        to {
+            opacity: 1;
+            box-shadow: 0 0 12px rgba(0, 255, 255, 0.6);
+        }
+    }
+
+    .terminal-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3rem;
+        font-family: "Share Tech Mono", monospace;
+        z-index: 3;
+    }
+
+    .title-container {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .title-prefix {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #00ffff;
+        text-shadow:
+            0 0 10px #00ffff,
+            0 0 20px #00ffff,
+            0 0 30px #00ffff;
+        letter-spacing: 3px;
+        background: linear-gradient(45deg, #00ffff, #ff00ff, #00ffff);
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: title-gradient 4s ease infinite;
+    }
+
+    .title-cursor {
+        color: #00ffff;
+        font-weight: bold;
+        animation: cursor-blink 1s infinite;
+    }
+
+    @keyframes title-gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    @keyframes cursor-blink {
+        0%,
+        50% {
+            opacity: 1;
+        }
+        51%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .version-container {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .version {
+        font-size: 0.8rem;
+        color: #ff00ff;
+        background: rgba(255, 0, 255, 0.1);
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        border: 1px solid rgba(255, 0, 255, 0.3);
+        box-shadow: 0 0 8px rgba(255, 0, 255, 0.2);
+    }
+
+    .build-info {
+        font-size: 0.7rem;
+        color: #888;
+        background: rgba(100, 100, 100, 0.1);
+        padding: 0.1rem 0.3rem;
+        border-radius: 3px;
+        border: 1px solid rgba(100, 100, 100, 0.3);
+    }
+
+    .terminal-status {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-end;
+        z-index: 3;
+    }
+
+    .status-grid {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.8rem;
+        background: rgba(0, 255, 0, 0.1);
+        border-radius: 6px;
+        border: 1px solid rgba(0, 255, 0, 0.3);
+    }
+
+    .status-indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #00ff00;
+        box-shadow:
+            0 0 10px #00ff00,
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        animation: status-pulse 2s infinite;
+    }
+
+    .status-text {
+        color: #00ff00;
+        font-size: 0.9rem;
+        font-weight: bold;
+        text-shadow: 0 0 8px rgba(0, 255, 0, 0.6);
+    }
+
+    .signal-bars {
+        display: flex;
+        gap: 2px;
+        align-items: flex-end;
+        height: 12px;
+    }
+
+    .bar {
+        width: 3px;
+        background: #00ff00;
+        border-radius: 1px;
+        animation: signal-strength 2s ease-in-out infinite;
+    }
+
+    .bar:nth-child(1) {
+        height: 30%;
+        animation-delay: 0s;
+    }
+    .bar:nth-child(2) {
+        height: 50%;
+        animation-delay: 0.3s;
+    }
+    .bar:nth-child(3) {
+        height: 80%;
+        animation-delay: 0.6s;
+    }
+    .bar:nth-child(4) {
+        height: 100%;
+        animation-delay: 0.9s;
+    }
+
+    @keyframes signal-strength {
+        0%,
+        100% {
+            opacity: 0.5;
+        }
+        50% {
+            opacity: 1;
+            box-shadow: 0 0 8px #00ff00;
+        }
+    }
+
+    @keyframes status-pulse {
+        0%,
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.7;
+            transform: scale(1.2);
+            box-shadow: 0 0 15px #00ff00;
+        }
+    }
+
+    .data-transfer {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.7rem;
+    }
+
+    .transfer-rate {
+        color: #00ccff;
+        background: rgba(0, 204, 255, 0.1);
+        padding: 0.1rem 0.4rem;
+        border-radius: 3px;
+        border: 1px solid rgba(0, 204, 255, 0.3);
+        text-align: center;
+        min-width: 70px;
+        animation: data-flow 2s ease-in-out infinite alternate;
+    }
+
+    .transfer-rate:nth-child(2) {
+        animation-delay: 1s;
+    }
+
+    @keyframes data-flow {
+        from {
+            opacity: 0.7;
+            background: rgba(0, 204, 255, 0.1);
+        }
+        to {
+            opacity: 1;
+            background: rgba(0, 204, 255, 0.2);
+            box-shadow: 0 0 8px rgba(0, 204, 255, 0.3);
+        }
+    }
+
+    /* 移动端响应式设计 */
+    @media (max-width: 768px) {
+        .terminal-header {
+            padding: 0.8rem 1rem;
+            margin: -1rem -1rem 0 -1rem;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .terminal-controls {
+            order: 1;
+            gap: 0.8rem;
+        }
+
+        .control {
+            width: 14px;
+            height: 14px;
+        }
+
+        .system-info {
+            display: none;
+        }
+
+        .terminal-title {
+            order: 2;
+            flex: 1;
+        }
+
+        .title-prefix {
+            font-size: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .terminal-status {
+            order: 3;
+            align-items: center;
+        }
+
+        .data-transfer {
+            flex-direction: row;
+            gap: 0.3rem;
+        }
+
+        .transfer-rate {
+            font-size: 0.6rem;
+            min-width: 60px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .terminal-header {
+            padding: 0.6rem 0.8rem;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .terminal-controls {
+            order: 1;
+            margin-bottom: 0.3rem;
+        }
+
+        .terminal-title {
+            order: 2;
+        }
+
+        .title-prefix {
+            font-size: 0.9rem;
+        }
+
+        .terminal-status {
+            order: 3;
+        }
+
+        .signal-bars {
+            height: 10px;
+        }
+
+        .bar {
+            width: 2px;
+        }
+    }
+</style>
+
+<script>
+    // 动态数据更新
+    function updateHeaderData() {
+        // CPU使用率动态变化 (20-90%)
+        const cpuElement = document.getElementById("cpu-usage");
+        if (cpuElement) {
+            const cpuUsage = Math.floor(Math.random() * 70) + 20; // 20-90
+            cpuElement.textContent = `CPU: ${cpuUsage}%`;
+        }
+
+        // 内存使用率动态变化 (40-95%)
+        const memoryElement = document.getElementById("memory-usage");
+        if (memoryElement) {
+            const memoryUsage = Math.floor(Math.random() * 55) + 40; // 40-95
+            memoryElement.textContent = `RAM: ${memoryUsage}%`;
+        }
+
+        // 上传速度动态变化 (0.1-9.9MB/s)
+        const uploadElement = document.getElementById("upload-rate");
+        if (uploadElement) {
+            const uploadSpeed = (Math.random() * 9.8 + 0.1).toFixed(1);
+            uploadElement.textContent = `↑ ${uploadSpeed}MB/s`;
+        }
+
+        // 下载速度动态变化 (0.5-15.9MB/s)
+        const downloadElement = document.getElementById("download-rate");
+        if (downloadElement) {
+            const downloadSpeed = (Math.random() * 15.4 + 0.5).toFixed(1);
+            downloadElement.textContent = `↓ ${downloadSpeed}MB/s`;
+        }
+    }
+
+    // 版本号偶尔更新 (更低频率)
+    function updateVersionInfo() {
+        const versionElement = document.getElementById("version");
+        const buildElement = document.getElementById("build-info");
+
+        if (versionElement && buildElement) {
+            // 随机更新版本的最后一位数字
+            const majorVersion = 2;
+            const minorVersion = 0;
+            const patchVersion = Math.floor(Math.random() * 99) + 50; // 50-99
+            versionElement.textContent = `v${majorVersion}.${minorVersion}.${patchVersion}`;
+
+            // 随机生成构建ID
+            const buildChars = "0123456789ABCDEF";
+            let buildId = "BUILD-";
+            for (let i = 0; i < 4; i++) {
+                buildId += buildChars.charAt(
+                    Math.floor(Math.random() * buildChars.length),
+                );
+            }
+            buildElement.textContent = buildId;
+        }
+    }
+
+    // 启动动态更新
+    document.addEventListener("DOMContentLoaded", function () {
+        // 每2秒更新一次系统数据
+        setInterval(updateHeaderData, 2000);
+
+        // 每30秒更新一次版本信息
+        setInterval(updateVersionInfo, 30000);
+
+        // 立即执行一次更新
+        updateHeaderData();
+    });
+</script>

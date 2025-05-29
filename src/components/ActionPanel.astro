@@ -1,0 +1,363 @@
+---
+// Action panel component for player choices
+---
+
+<div id="player-actions" class="action-panel">
+    <div class="action-header">
+        <div class="prompt-container">
+            <span class="prompt-symbol">&gt;</span>
+            <span class="prompt-cursor">_</span>
+        </div>
+        <p class="action-prompt">你可以：</p>
+        <div class="data-flow"></div>
+    </div>
+    <div id="scene-exits" class="button-grid"></div>
+</div>
+
+<style>
+    .action-panel {
+        background: linear-gradient(
+            135deg,
+            rgba(0, 20, 40, 0.6),
+            rgba(0, 30, 50, 0.4)
+        );
+        border-radius: 8px;
+        border: 1px solid rgba(0, 204, 255, 0.4);
+        box-shadow:
+            0 4px 20px rgba(0, 204, 255, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .action-panel::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #00ccff, transparent);
+        animation: action-scan 2s linear infinite;
+    }
+
+    @keyframes action-scan {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(100%);
+        }
+    }
+
+    .action-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+        background: linear-gradient(
+            135deg,
+            rgba(0, 30, 60, 0.4),
+            rgba(0, 20, 40, 0.6)
+        );
+        border-bottom: 1px solid rgba(0, 204, 255, 0.3);
+        position: relative;
+    }
+
+    .prompt-container {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 1.2rem;
+    }
+
+    .prompt-symbol {
+        color: #00ffff;
+        font-weight: bold;
+        text-shadow: 0 0 8px #00ffff;
+        animation: symbol-glow 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes symbol-glow {
+        from {
+            text-shadow: 0 0 8px #00ffff;
+            opacity: 0.8;
+        }
+        to {
+            text-shadow:
+                0 0 15px #00ffff,
+                0 0 25px #00ffff;
+            opacity: 1;
+        }
+    }
+
+    .prompt-cursor {
+        color: #00ffff;
+        animation: cursor-blink 1s infinite;
+        font-weight: bold;
+    }
+
+    @keyframes cursor-blink {
+        0%,
+        50% {
+            opacity: 1;
+        }
+        51%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .action-prompt {
+        margin: 0;
+        font-weight: bold;
+        letter-spacing: 1px;
+        color: #ffffff;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        font-size: 1.1rem;
+    }
+
+    .data-flow {
+        flex: 1;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #00ccff, transparent);
+        border-radius: 1px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .data-flow::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, #ffffff, transparent);
+        animation: data-stream-flow 3s linear infinite;
+    }
+
+    @keyframes data-stream-flow {
+        0% {
+            left: -100%;
+        }
+        100% {
+            left: 100%;
+        }
+    }
+
+    .button-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1rem;
+        padding: 1.5rem;
+    }
+
+    /* Global button styles for the action panel */
+    :global(.action-panel button) {
+        background: linear-gradient(
+            135deg,
+            rgba(30, 30, 60, 0.8),
+            rgba(20, 20, 40, 0.9)
+        );
+        border: 2px solid #00ccff;
+        color: #00ffff;
+        padding: 1rem 1.5rem;
+        border-radius: 6px;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 1rem;
+        font-weight: bold;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition:
+            transform 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+            box-shadow 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+            background 0.08s ease,
+            border-color 0.08s ease;
+        position: relative;
+        overflow: hidden;
+        text-align: left;
+        box-shadow:
+            0 2px 10px rgba(0, 204, 255, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        user-select: none;
+    }
+
+    :global(.action-panel button::before) {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(0, 255, 255, 0.4),
+            transparent
+        );
+        transition: left 0.2s ease;
+    }
+
+    :global(.action-panel button:hover) {
+        background: linear-gradient(
+            135deg,
+            rgba(0, 180, 255, 0.4),
+            rgba(0, 120, 200, 0.5)
+        );
+        box-shadow:
+            0 0 25px rgba(0, 255, 255, 0.6),
+            0 6px 20px rgba(0, 204, 255, 0.4),
+            inset 0 0 20px rgba(0, 255, 255, 0.15);
+        transform: translateY(-3px) scale(1.02);
+        border-color: #66ffff;
+        text-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
+    }
+
+    :global(.action-panel button:hover::before) {
+        left: 100%;
+    }
+
+    :global(.action-panel button:active) {
+        transform: translateY(1px) scale(0.98);
+        box-shadow:
+            0 0 30px rgba(0, 255, 255, 0.8),
+            inset 0 4px 15px rgba(0, 0, 0, 0.5),
+            inset 0 0 25px rgba(0, 255, 255, 0.2);
+        background: linear-gradient(
+            135deg,
+            rgba(0, 255, 255, 0.3),
+            rgba(0, 200, 255, 0.4)
+        );
+        border-color: #ffffff;
+    }
+
+    :global(.action-panel .button-clicked) {
+        animation: button-activate 0.2s ease-out;
+        background: linear-gradient(
+            135deg,
+            rgba(0, 255, 255, 0.5),
+            rgba(0, 200, 255, 0.6)
+        );
+        box-shadow:
+            0 0 40px rgba(0, 255, 255, 1),
+            inset 0 0 30px rgba(255, 255, 255, 0.3);
+    }
+
+    @keyframes button-activate {
+        0% {
+            transform: scale(1);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+        }
+        30% {
+            transform: scale(0.95);
+            box-shadow: 0 0 50px rgba(0, 255, 255, 1);
+        }
+        100% {
+            transform: scale(1);
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.8);
+        }
+    }
+
+    :global(.action-panel .return-button) {
+        background: linear-gradient(
+            135deg,
+            rgba(80, 0, 120, 0.8),
+            rgba(60, 0, 100, 0.9)
+        );
+        border-color: #9900cc;
+        color: #dd99ff;
+    }
+
+    :global(.action-panel .return-button:hover) {
+        background: linear-gradient(
+            135deg,
+            rgba(150, 0, 200, 0.5),
+            rgba(120, 0, 180, 0.6)
+        );
+        box-shadow:
+            0 0 25px rgba(200, 0, 255, 0.8),
+            0 6px 20px rgba(153, 0, 204, 0.4),
+            inset 0 0 20px rgba(255, 0, 255, 0.15);
+        border-color: #ff66ff;
+        transform: translateY(-3px) scale(1.02);
+        text-shadow: 0 0 8px rgba(200, 0, 255, 0.8);
+    }
+
+    :global(.action-panel .return-button:active) {
+        transform: translateY(1px) scale(0.98);
+        box-shadow:
+            0 0 35px rgba(200, 0, 255, 1),
+            inset 0 4px 15px rgba(0, 0, 0, 0.5),
+            inset 0 0 25px rgba(255, 0, 255, 0.3);
+        background: linear-gradient(
+            135deg,
+            rgba(255, 0, 255, 0.4),
+            rgba(200, 0, 255, 0.5)
+        );
+        border-color: #ffffff;
+    }
+
+    .fade-in {
+        animation: fade-in-up 0.6s ease-out;
+    }
+
+    @keyframes fade-in-up {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    :global(.no-exits) {
+        color: #ff5555;
+        font-style: italic;
+        text-align: center;
+        width: 100%;
+        padding: 2rem;
+        background: linear-gradient(
+            135deg,
+            rgba(80, 20, 20, 0.4),
+            rgba(60, 0, 0, 0.5)
+        );
+        border-radius: 6px;
+        border: 1px solid rgba(255, 85, 85, 0.3);
+        box-shadow:
+            0 2px 10px rgba(255, 85, 85, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .button-grid {
+            grid-template-columns: 1fr;
+            gap: 0.8rem;
+            padding: 1rem;
+        }
+
+        .action-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.8rem;
+            padding: 1rem;
+        }
+
+        .data-flow {
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+
+        :global(.action-panel button) {
+            padding: 0.8rem 1rem;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+

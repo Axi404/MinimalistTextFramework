@@ -1,0 +1,395 @@
+---
+// Player stats component
+---
+
+<div id="player-info" class="stats-panel">
+    <div class="stats-header">
+        <div class="status-section">
+            <span class="status-icon">◉</span>
+            <h3 class="status-title">角色状态</h3>
+        </div>
+        <div id="game-time" class="time-display time-day">
+            <span class="time-label">DAY</span>
+            <span class="time-value">第1天 08:00</span>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-item health-stat">
+            <div class="stat-header">
+                <span class="stat-icon">❤</span>
+                <span class="stat-label">生命值</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 100%"></div>
+                <span class="progress-text">100</span>
+            </div>
+        </div>
+
+        <div class="stat-item money-stat">
+            <div class="stat-header">
+                <span class="stat-icon">💰</span>
+                <span class="stat-label">金钱</span>
+            </div>
+            <span id="player-money" class="stat-value">50</span>
+        </div>
+
+        <div class="stat-item inventory-stat">
+            <div class="stat-header">
+                <span class="stat-icon">🎒</span>
+                <span class="stat-label">背包</span>
+            </div>
+            <span id="player-inventory" class="stat-value">空</span>
+        </div>
+    </div>
+</div>
+
+<style>
+    .stats-panel {
+        background: linear-gradient(
+            135deg,
+            rgba(20, 40, 0, 0.6),
+            rgba(30, 50, 0, 0.4)
+        );
+        border-radius: 8px;
+        border: 1px solid rgba(255, 204, 0, 0.4);
+        box-shadow:
+            0 4px 20px rgba(255, 204, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+        margin-top: 1.5rem;
+    }
+
+    .stats-panel::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #ffcc00, transparent);
+        animation: stats-scan 3s linear infinite;
+    }
+
+    @keyframes stats-scan {
+        0% {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+
+    .stats-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        background: linear-gradient(
+            135deg,
+            rgba(40, 60, 0, 0.4),
+            rgba(30, 40, 0, 0.6)
+        );
+        border-bottom: 1px solid rgba(255, 204, 0, 0.3);
+    }
+
+    .status-section {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .status-icon {
+        color: #00ff00;
+        font-size: 1.5rem;
+        text-shadow: 0 0 10px #00ff00;
+        animation: status-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes status-pulse {
+        0%,
+        100% {
+            transform: scale(1);
+            text-shadow: 0 0 10px #00ff00;
+        }
+        50% {
+            transform: scale(1.1);
+            text-shadow:
+                0 0 15px #00ff00,
+                0 0 25px #00ff00;
+        }
+    }
+
+    .status-title {
+        color: #ffcc00;
+        margin: 0;
+        font-size: 1.3rem;
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-shadow: 0 0 8px rgba(255, 204, 0, 0.6);
+    }
+
+    .time-display {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.2rem;
+        font-family: "Share Tech Mono", monospace;
+        background: rgba(0, 40, 80, 0.7);
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        border: 1px solid #00aaff;
+        position: relative;
+        min-width: 120px;
+    }
+
+    .time-display::before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        right: 2px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #00ffff, transparent);
+        animation: time-scan 2s linear infinite;
+    }
+
+    @keyframes time-scan {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(100%);
+        }
+    }
+
+    .time-label {
+        font-size: 0.7rem;
+        color: #00aaff;
+        letter-spacing: 2px;
+        opacity: 0.8;
+    }
+
+    .time-value {
+        font-size: 0.9rem;
+        color: #00ffff;
+        font-weight: bold;
+        text-shadow: 0 0 5px #00ffff;
+    }
+
+    .time-day {
+        border-color: #00aaff;
+        background: rgba(0, 40, 80, 0.7);
+    }
+
+    .time-night {
+        border-color: #aa88ff;
+        background: rgba(40, 0, 80, 0.7);
+    }
+
+    .time-night .time-value {
+        color: #aa88ff;
+        text-shadow: 0 0 5px #aa88ff;
+    }
+
+    .time-night .time-label {
+        color: #8866cc;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.2rem;
+        padding: 1.5rem;
+    }
+
+    .stat-item {
+        background: linear-gradient(
+            135deg,
+            rgba(0, 30, 30, 0.6),
+            rgba(0, 40, 40, 0.4)
+        );
+        border-radius: 6px;
+        border: 1px solid rgba(0, 255, 255, 0.3);
+        padding: 1rem;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .stat-item:hover {
+        transform: translateY(-2px);
+        box-shadow:
+            0 4px 15px rgba(0, 255, 255, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border-color: rgba(0, 255, 255, 0.5);
+    }
+
+    .stat-item::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #00ffff, transparent);
+        transition: left 0.3s ease;
+    }
+
+    .stat-item:hover::before {
+        left: 100%;
+    }
+
+    .stat-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .stat-icon {
+        font-size: 1.2rem;
+        filter: drop-shadow(0 0 5px currentColor);
+    }
+
+    .health-stat .stat-icon {
+        color: #ff4757;
+    }
+
+    .money-stat .stat-icon {
+        color: #ffa502;
+    }
+
+    .inventory-stat .stat-icon {
+        color: #3742fa;
+    }
+
+    .stat-label {
+        color: #bbbbbb;
+        font-size: 0.95rem;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+        color: #ffffff;
+        font-weight: bold;
+        font-size: 1.2rem;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        padding: 0.3rem 0.8rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        display: inline-block;
+        min-width: 60px;
+        text-align: center;
+    }
+
+    /* Progress bar styles */
+    .progress-bar {
+        width: 100%;
+        height: 18px;
+        background: linear-gradient(
+            135deg,
+            rgba(50, 50, 50, 0.8),
+            rgba(30, 30, 30, 0.9)
+        );
+        border-radius: 10px;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(135deg, #00ff00, #00ffaa, #00ff00);
+        transition: all 0.5s ease;
+        position: relative;
+        border-radius: 10px;
+        box-shadow:
+            0 0 10px rgba(0, 255, 170, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .progress-fill::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 50%;
+        background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.4),
+            transparent
+        );
+        border-radius: 10px 10px 0 0;
+    }
+
+    .progress-text {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-size: 0.8rem;
+        font-weight: bold;
+        text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+        z-index: 1;
+    }
+
+    /* Health color variations */
+    .progress-fill[style*="width: 100%"],
+    .progress-fill[style*="width: 9"],
+    .progress-fill[style*="width: 8"],
+    .progress-fill[style*="width: 7"] {
+        background: linear-gradient(135deg, #00ff00, #00ffaa);
+        box-shadow: 0 0 10px rgba(0, 255, 170, 0.5);
+    }
+
+    .progress-fill[style*="width: 6"],
+    .progress-fill[style*="width: 5"],
+    .progress-fill[style*="width: 4"] {
+        background: linear-gradient(135deg, #ffff00, #ffaa00);
+        box-shadow: 0 0 10px rgba(255, 170, 0, 0.5);
+    }
+
+    .progress-fill[style*="width: 3"],
+    .progress-fill[style*="width: 2"],
+    .progress-fill[style*="width: 1"] {
+        background: linear-gradient(135deg, #ff0000, #ff5500);
+        box-shadow: 0 0 10px rgba(255, 85, 0, 0.5);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .stats-header {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .time-display {
+            min-width: auto;
+            width: 100%;
+        }
+    }
+</style>
+
