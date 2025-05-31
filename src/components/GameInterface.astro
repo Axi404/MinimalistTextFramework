@@ -249,7 +249,9 @@ const initialSceneId = "welcome";
                 hasSceneChange = true;
                 // 创建一个延迟调用，确保前面的处理完成
                 setTimeout(() => {
-                    triggerEvent(result.triggerEvent);
+                    // 检查是否指定了返回场景
+                    const returnSceneId = result.returnTo || null;
+                    triggerEvent(result.triggerEvent, returnSceneId);
                 }, 10);
                 break; // 停止处理其他结果，事件优先
             }
@@ -259,7 +261,12 @@ const initialSceneId = "welcome";
                 hasSceneChange = true;
                 // 创建一个延迟调用，确保前面的处理完成
                 setTimeout(() => {
-                    navigateToScene(result.nextScene);
+                    // 检查是否为特殊的 RETURN 标记
+                    if (result.nextScene === "RETURN") {
+                        returnFromEvent();
+                    } else {
+                        navigateToScene(result.nextScene);
+                    }
                 }, 10);
                 break; // 停止处理其他结果，场景转换优先
             }
@@ -362,9 +369,10 @@ const initialSceneId = "welcome";
     }
 
     // 触发临时事件
-    function triggerEvent(eventId) {
-        // 保存当前场景到事件栈
-        gameState.eventStack.push(gameState.currentSceneId);
+    function triggerEvent(eventId, returnSceneId = null) {
+        // 保存指定的场景或当前场景到事件栈
+        const sceneToSave = returnSceneId || gameState.currentSceneId;
+        gameState.eventStack.push(sceneToSave);
 
         // 导航到事件场景
         navigateToScene(eventId);
